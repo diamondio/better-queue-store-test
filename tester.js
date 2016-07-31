@@ -152,7 +152,7 @@ exports.basic = function (name, opts) {
               if (err) throw err;
               assert.ok(workers[lock1], 'should have first lock');
               assert.ok(workers[lock2], 'should have second lock');
-              assert.equal(Object.keys(workers).length, 2, 'should have one worker');
+              assert.equal(Object.keys(workers).length, 2, 'should have two workers');
               assert.equal(workers[lock1].task1.value, 'secret 1', 'should have task1');
               assert.equal(workers[lock2].task3.value, 'secret 3', 'should have task3');
 
@@ -166,7 +166,7 @@ exports.basic = function (name, opts) {
                   if (err) throw err;
                   assert.ok(!workers[lock1], 'should not have lock 1');
                   assert.ok(!workers[lock2], 'should not have lock 2');
-                  assert.equal(Object.keys(workers).length, 0, 'should have one worker');
+                  assert.equal(Object.keys(workers).length, 0, 'should have no workers');
                   done();
                 })
 
