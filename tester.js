@@ -52,156 +52,164 @@ exports.basic = function (name, opts) {
 
     it('put 3, take last 2, take last 2', function (done) {
       var store = this.store;
-
-      // Put 3
-      store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
-        if (err) throw err;
-
-        // Take 2
-        store.takeLastN(2, function (err, lockId) {
+      store.connect(function (err, len) {
+        
+        // Put 3
+        store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
           if (err) throw err;
-          store.getLock(lockId, function (err, tasks) {
-            if (err) throw err;
-            assert.equal(tasks.task3.value, 'secret 3', 'should get the third task');
-            assert.equal(tasks.task2.value, 'secret 2', 'should get the second task');
-            assert.ok(!tasks.task1, 'should not get the first task');
+        store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
+          if (err) throw err;
+        store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
+          if (err) throw err;
 
-            // Take 2
-            store.takeLastN(2, function (err, lockId) {
+          // Take 2
+          store.takeLastN(2, function (err, lockId) {
+            if (err) throw err;
+            store.getLock(lockId, function (err, tasks) {
               if (err) throw err;
-              store.getLock(lockId, function (err, tasks) {
+              assert.equal(tasks.task3.value, 'secret 3', 'should get the third task');
+              assert.equal(tasks.task2.value, 'secret 2', 'should get the second task');
+              assert.ok(!tasks.task1, 'should not get the first task');
+
+              // Take 2
+              store.takeLastN(2, function (err, lockId) {
                 if (err) throw err;
-                assert.ok(!tasks.task3, 'should not get the third task');
-                assert.ok(!tasks.task2, 'should not get the second task');
-                assert.equal(tasks.task1.value, 'secret 1', 'should get the first task');
-                done();
+                store.getLock(lockId, function (err, tasks) {
+                  if (err) throw err;
+                  assert.ok(!tasks.task3, 'should not get the third task');
+                  assert.ok(!tasks.task2, 'should not get the second task');
+                  assert.equal(tasks.task1.value, 'secret 1', 'should get the first task');
+                  done();
+                })
               })
             })
           })
-        })
-      })})})
+        })})})
+      })
     })
 
     it('put 3, take first 2, take first 2', function (done) {
       var store = this.store;
+      store.connect(function (err, len) {
 
-      // Put 3
-      store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
-        if (err) throw err;
-
-        // Take 2
-        store.takeFirstN(2, function (err, lockId) {
+        // Put 3
+        store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
           if (err) throw err;
-          store.getLock(lockId, function (err, tasks) {
-            if (err) throw err;
-            assert.equal(tasks.task1.value, 'secret 1', 'should get the first task');
-            assert.equal(tasks.task2.value, 'secret 2', 'should get the second task');
-            assert.ok(!tasks.task3, 'should not get the third task');
+        store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
+          if (err) throw err;
+        store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
+          if (err) throw err;
 
-            // Take 2
-            store.takeFirstN(2, function (err, lockId) {
+          // Take 2
+          store.takeFirstN(2, function (err, lockId) {
+            if (err) throw err;
+            store.getLock(lockId, function (err, tasks) {
               if (err) throw err;
-              store.getLock(lockId, function (err, tasks) {
+              assert.equal(tasks.task1.value, 'secret 1', 'should get the first task');
+              assert.equal(tasks.task2.value, 'secret 2', 'should get the second task');
+              assert.ok(!tasks.task3, 'should not get the third task');
+
+              // Take 2
+              store.takeFirstN(2, function (err, lockId) {
                 if (err) throw err;
-                assert.ok(!tasks.task1, 'should not get the first task');
-                assert.ok(!tasks.task2, 'should not get the second task');
-                assert.equal(tasks.task3.value, 'secret 3', 'should get the third task');
-                done();
+                store.getLock(lockId, function (err, tasks) {
+                  if (err) throw err;
+                  assert.ok(!tasks.task1, 'should not get the first task');
+                  assert.ok(!tasks.task2, 'should not get the second task');
+                  assert.equal(tasks.task3.value, 'secret 3', 'should get the third task');
+                  done();
+                })
               })
             })
           })
-        })
-      })})})
+        })})})
+      })
     })
 
     it('get and release workers', function (done) {
       var store = this.store;
+      store.connect(function (err, len) {
 
-      // Put 3
-      store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
-        if (err) throw err;
-
-        // take 1
-        store.takeFirstN(1, function (err, lock1) {
+        // Put 3
+        store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
+          if (err) throw err;
+        store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
+          if (err) throw err;
+        store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
           if (err) throw err;
 
-        // take 1
-        store.takeLastN(1, function (err, lock2) {
-          if (err) throw err;
-
-          store.getRunningTasks(function (err, workers) {
+          // take 1
+          store.takeFirstN(1, function (err, lock1) {
             if (err) throw err;
-            assert.ok(workers[lock1], 'should have first lock');
-            assert.ok(workers[lock2], 'should have second lock');
-            assert.equal(Object.keys(workers).length, 2, 'should have one worker');
-            assert.equal(workers[lock1].task1.value, 'secret 1', 'should have task1');
-            assert.equal(workers[lock2].task3.value, 'secret 3', 'should have task3');
 
-            // Release locks
-            store.releaseLock(lock1, function (err) {
-              if (err) throw err;
-            store.releaseLock(lock2, function (err) {
-              if (err) throw err;
+          // take 1
+          store.takeLastN(1, function (err, lock2) {
+            if (err) throw err;
 
-              store.getRunningTasks(function (err, workers) {
+            store.getRunningTasks(function (err, workers) {
+              if (err) throw err;
+              assert.ok(workers[lock1], 'should have first lock');
+              assert.ok(workers[lock2], 'should have second lock');
+              assert.equal(Object.keys(workers).length, 2, 'should have one worker');
+              assert.equal(workers[lock1].task1.value, 'secret 1', 'should have task1');
+              assert.equal(workers[lock2].task3.value, 'secret 3', 'should have task3');
+
+              // Release locks
+              store.releaseLock(lock1, function (err) {
                 if (err) throw err;
-                assert.ok(!workers[lock1], 'should not have lock 1');
-                assert.ok(!workers[lock2], 'should not have lock 2');
-                assert.equal(Object.keys(workers).length, 0, 'should have one worker');
-                done();
-              })
+              store.releaseLock(lock2, function (err) {
+                if (err) throw err;
 
-            })})
-          })
+                store.getRunningTasks(function (err, workers) {
+                  if (err) throw err;
+                  assert.ok(!workers[lock1], 'should not have lock 1');
+                  assert.ok(!workers[lock2], 'should not have lock 2');
+                  assert.equal(Object.keys(workers).length, 0, 'should have one worker');
+                  done();
+                })
 
-        })})
-      })})})
+              })})
+            })
+
+          })})
+        })})})
+      })
     })
 
     it('put 4, delete 1, take first 2', function (done) {
       var store = this.store;
+      store.connect(function (err, len) {
 
-      // Put 4
-      store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
-        if (err) throw err;
-      store.putTask('task4', { value: 'secret 4' }, 1, function (err) {
-        if (err) throw err;
-
-        // Remove the second
-        store.deleteTask('task2', function (err) {
+        // Put 4
+        store.putTask('task1', { value: 'secret 1' }, 1, function (err) {
+          if (err) throw err;
+        store.putTask('task2', { value: 'secret 2' }, 1, function (err) {
+          if (err) throw err;
+        store.putTask('task3', { value: 'secret 3' }, 1, function (err) {
+          if (err) throw err;
+        store.putTask('task4', { value: 'secret 4' }, 1, function (err) {
           if (err) throw err;
 
-          // take 2
-          store.takeFirstN(2, function (err, lockId) {
+          // Remove the second
+          store.deleteTask('task2', function (err) {
             if (err) throw err;
 
-            store.getLock(lockId, function (err, tasks) {
+            // take 2
+            store.takeFirstN(2, function (err, lockId) {
               if (err) throw err;
-              assert.equal(tasks.task1.value, 'secret 1', 'should get the first task');
-              assert.ok(!tasks.task2, 'should not get the second task');
-              assert.equal(tasks.task3.value, 'secret 3', 'should get the third task');
-              assert.ok(!tasks.task4, 'should not get the fourth task');
-              done();
+
+              store.getLock(lockId, function (err, tasks) {
+                if (err) throw err;
+                assert.equal(tasks.task1.value, 'secret 1', 'should get the first task');
+                assert.ok(!tasks.task2, 'should not get the second task');
+                assert.equal(tasks.task3.value, 'secret 3', 'should get the third task');
+                assert.ok(!tasks.task4, 'should not get the fourth task');
+                done();
+              })
             })
           })
-        })
-      })})})})
+        })})})})
+      })
     })
 
   })
