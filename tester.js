@@ -40,12 +40,14 @@ exports.basic = function (name, opts) {
 
     it('put and get', function (done) {
       var store = this.store;
-      store.putTask('test', { value: 'secret' }, 1, function (err) {
-        if (err) throw err;
-        store.getTask('test', function (err, task) {
+      store.connect(function (err, len) {
+        store.putTask('test', { value: 'secret' }, 1, function (err) {
           if (err) throw err;
-          assert.equal(task.value, 'secret', 'should get the task');
-          done();
+          store.getTask('test', function (err, task) {
+            if (err) throw err;
+            assert.equal(task.value, 'secret', 'should get the task');
+            done();
+          })
         })
       })
     })
