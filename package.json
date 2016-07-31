@@ -1,6 +1,6 @@
 {
   "name": "better-queue-store-test",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Better Queue store test",
   "main": "tester.js",
   "scripts": {
