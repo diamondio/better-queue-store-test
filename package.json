@@ -27,5 +27,7 @@
     "better-queue": "3.x"
   },
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "better-queue": "^3.8.2"
+  }
 }

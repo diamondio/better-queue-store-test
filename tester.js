@@ -1,4 +1,35 @@
 var assert = require('assert');
+var Queue  = require('better-queue');
+
+exports.benchmark = function (name, opts, cb) {
+  console.log(name + ' benchmark tests\n\n');
+  var create = opts.create || function(cb){cb()};
+  var destroy = opts.destroy || function(cb){cb()};
+  var cb = cb || function () {};
+
+  create(function (err, store) {
+    if (err) return cb(err);
+    var queue = new Queue(function (job, cb) {
+      setImmediate(cb);
+    }, {
+      store
+    });
+    var startTime = new Date().getTime();
+    for (var i = 0; i < opts.numItems; i++) {
+      queue.push(i);
+    }
+    var queueTime = new Date().getTime();
+    queue.on('drain', function () {
+      var endTime = new Date().getTime();
+      console.log('Test complete.');
+      console.log(`Queued ${opts.numItems} in ${queueTime - startTime}ms`);
+      console.log(`Drained queue in ${endTime - queueTime}ms`);
+      console.log(`Total time spent ${endTime - startTime}ms`);
+      console.log(`Avg time cost per item was ${(endTime - startTime)/opts.numItems}ms`);
+      destroy(cb);
+    });
+  });
+}
 
 exports.basic = function (name, opts) {
   var create = opts.create || function(cb){cb()};
