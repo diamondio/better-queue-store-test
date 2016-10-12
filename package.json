@@ -28,6 +28,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "async": "^2.0.1",
     "better-queue": "^3.8.2"
   }
 }
