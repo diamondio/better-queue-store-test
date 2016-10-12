@@ -8,6 +8,15 @@ exports.benchmark = function (name, opts, cb) {
   var destroy = opts.destroy || function(cb){cb()};
   var cb = cb || function () {};
 
+  var realCB = cb;
+  var tickInterval = setInterval(function () {
+    console.log('...');
+  }, 60000);
+  cb = function () {
+    clearInterval(tickInterval);
+    realCB.apply(null, arguments);
+  }
+
   create(function (err, store) {
     if (err) return cb(err);
     var queue;
