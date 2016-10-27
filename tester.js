@@ -37,20 +37,22 @@ exports.benchmark = function (name, opts, cb) {
       queue.push(i);
     }
     var queueTime = new Date().getTime();
-    var postDrain = function () {
-      var endTime = new Date().getTime();
-      console.log('Test complete.');
-      console.log(`Queued ${opts.numItems} in ${queueTime - startTime}ms`);
-      console.log(`Drained queue in ${endTime - queueTime}ms`);
-      console.log(`Total time spent ${endTime - startTime}ms`);
-      console.log(`Avg time cost per item was ${(endTime - startTime)/opts.numItems}ms`);
-      destroy(cb);
-    }
-    if (opts.baseline) {
-      queue.drain = postDrain;
-    } else {
-      queue.on('drain', postDrain);
-    }
+    setImmediate(function () {
+      var postDrain = function () {
+        var endTime = new Date().getTime();
+        console.log('Test complete.');
+        console.log(`Queued ${opts.numItems} in ${queueTime - startTime}ms`);
+        console.log(`Drained queue in ${endTime - queueTime}ms`);
+        console.log(`Total time spent ${endTime - startTime}ms`);
+        console.log(`Avg time cost per item was ${(endTime - startTime)/opts.numItems}ms`);
+        destroy(cb);
+      }
+      if (opts.baseline) {
+        queue.drain = postDrain;
+      } else {
+        queue.on('drain', postDrain);
+      }
+    });
   });
 }
 
