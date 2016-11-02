@@ -34,7 +34,8 @@ exports.benchmark = function (name, opts, cb) {
     }
     var startTime = new Date().getTime();
     for (var i = 0; i < opts.numItems; i++) {
-      queue.push(i);
+      if (!opts['taskCreator']) queue.push(i);
+      else queue.push(opts['taskCreator'](i));
     }
     var queueTime = new Date().getTime();
     setImmediate(function () {
